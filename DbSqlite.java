@@ -6,7 +6,7 @@ import java.sql.SQLException;
 public class DbSqlite {
 
 	public static void main(String[] args) {
-		String path = "C:/DAM2/AD/Practicas/Pr01/";
+		String path = "./db/";
 		Connection conn = null;
         try {
             // db parameters
