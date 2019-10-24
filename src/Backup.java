@@ -1,11 +1,10 @@
+package src;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Calendar;
 
-public class Backup {
-
-	
+public class Backup { 
 
 	public String getFormatDay(int day) {
 		return (day > 10) ? "" + day : "0" + day;
@@ -25,14 +24,19 @@ public class Backup {
 		}
 
 		// Movemos la base de datos
-		File origen = new File(Config.PATHDB + Config.DBNAME);
+		File origen = new File(Config.PATH_DB + Config.DBNAME);
 		format = "db-" + getFormatDay(cal.get(Calendar.DAY_OF_MONTH)) + ".db";
 		File destino = new File(dirBackup, format);
+		
+		if (destino.exists()) {
+			return;
+		}
+		
 		try {
-			Files.copy(origen.toPath(),destino.toPath());
-		} catch (IOException e) {
+			Files.copy(origen.toPath(), destino.toPath());
+		} catch (IOException e) { 
 			e.printStackTrace();
-			System.out.println(e.getMessage());
+			System.out.println(e);
 		}
 	}
 	
@@ -47,7 +51,6 @@ public class Backup {
 		}
 		return instance;
 	}
-
-
+ 
 
 }
