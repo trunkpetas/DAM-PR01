@@ -1,3 +1,4 @@
+
 - Tienda (TPV = Terminal Punto Venta)
 => Clientes -> Si, pero.
 - Usuario - Factura => nombre, dni, direccion, telefono, email
@@ -10,3 +11,4 @@
 - [] Lineas_factura
 => Pasarela de Pago - Simulada
 Hola Pepe
+
