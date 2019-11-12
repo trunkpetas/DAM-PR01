@@ -1,10 +1,12 @@
 package src.models;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 import src.models.comun.DbObject;
 
-public class FacturaLinea extends DbObject{
+public class FacturaLinea extends DbObject {
 
 	private Integer id;
 	private Date created;
@@ -15,13 +17,13 @@ public class FacturaLinea extends DbObject{
 	public Integer getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	private void setId(Integer id) {
 		this.id = id;
 	}
 	public Date getCreated() {
 		return created;
 	}
-	public void setCreated(Date created) {
+	private void setCreated(Date created) {
 		this.created = created;
 	}
 	public Integer getId_factura() {
@@ -45,26 +47,42 @@ public class FacturaLinea extends DbObject{
 	
 	@Override
 	public String getTable() {
-		return "facturasLinea";
+		return "facturas_linea";
 	}
 	@Override
 	public String getCampos() {
 		String campos = "";
-		if (this.nombre != null || !this.nombre.trim().isEmpty()) {
-			campos = campos + "nombre";
-		}
-		if (this.id_factura != null || this.id_factura<0) {
-			campos = campos + "id_factura";
-		}
-		if (this.precio != null || this.precio<0) {
-			campos = campos + "precio";
-		}
-		return "nombre, id_factura, precio";
+		campos = getCorrectCampos(campos, "id_factura", this.id_factura);
+		campos = getCorrectCampos(campos, "nombre"    , this.nombre);
+		campos = getCorrectCampos(campos, "precio"    , this.precio); 
+		return campos;
 	}
 	@Override
 	public String getValues() {
-		return "'"+this.nombre+"','"+this.id_factura+"','"+this.precio+"'";		
+		String value = "";
+		value = getCorrectValues(value, this.id_factura);
+		value = getCorrectValues(value, this.nombre);
+		value = getCorrectValues(value, this.precio); 
+		return value;		
 	}
 	
+	@Override
+	public DbObject getDbObject(ResultSet res) throws SQLException {
+		FacturaLinea item = new FacturaLinea();
+		item.setId( res.getInt("id") ); 
+		int created = res.getInt("created");
+		Date date = new Date(created);		
+		item.setCreated( date ); 
+		item.setId_factura(res.getInt("id_factura"));
+		item.setNombre(res.getString("nombre"));
+		item.setPrecio(res.getInt("precio")); 
+				
+		return item;
+	}
+	
+	@Override
+	public String toString() {
+		return this.getValues();
+	}
 	
 }

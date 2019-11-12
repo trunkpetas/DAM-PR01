@@ -1,5 +1,7 @@
 package src.models;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 import src.models.comun.DbObject;
@@ -9,19 +11,19 @@ public class Factura extends DbObject{
 	private Integer id;
 	private Date created;
 	private Date fecha;
-	private Integer serie;
+	private Integer serie; 
 	private Integer id_cliente;
 	
 	public Integer getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	private void setId(Integer id) {
 		this.id = id;
 	}
 	public Date getCreated() {
 		return created;
 	}
-	public void setCreated(Date created) {
+	private void setCreated(Date created) {
 		this.created = created;
 	}
 	public Date getFecha() {
@@ -45,26 +47,46 @@ public class Factura extends DbObject{
 	
 	@Override
 	public String getTable() {
-		
 		return "facturas";
 	}
 	@Override
 	public String getCampos() {
 		String campos = "";
-		if (this.fecha != null || !this.fecha.toString().trim().isEmpty()) {
-			campos = campos + "fecha";
-		}
-		if (this.id_cliente != null || this.id_cliente<0) {
-			campos = campos + "id_cliente";
-		}
-		if (this.serie != null || this.serie<0) {
-			campos = campos + "serie";
-		}
-		return "fecha,id_cliente,serie";
+		campos = getCorrectCampos(campos, "fecha"     , this.fecha);
+		campos = getCorrectCampos(campos, "serie"     , this.serie);
+		campos = getCorrectCampos(campos, "id_cliente", this.id_cliente); 
+		return campos;
 	}
 	@Override
 	public String getValues() {
-		return "'"+this.fecha+"'"+ this.id_cliente +"'"+ this.serie +"'";				
+		String value = "";
+		value = getCorrectValues(value, this.fecha);
+		value = getCorrectValues(value, this.serie);
+		value = getCorrectValues(value, this.id_cliente); 
+		return value;		
+	}
+	
+	@Override
+	public DbObject getDbObject(ResultSet res) throws SQLException {
+		Factura item = new Factura();
+		item.setId( res.getInt("id") ); 
+		int created = res.getInt("created");
+		Date date = new Date(created);		
+		item.setCreated( date );
+		
+		created = res.getInt("fecha");
+		date = new Date(created);		
+		item.setFecha( date );
+		 
+		item.setSerie( res.getInt("serie") );
+		item.setId_cliente( res.getInt("id_cliente") ); 
+				
+		return item;
+	}
+	
+	@Override
+	public String toString() {
+		return this.getValues();
 	}
 	
 	

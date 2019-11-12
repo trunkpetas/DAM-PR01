@@ -4,7 +4,7 @@
 	=> nombre
 	=> dni
 	=> direccion
-	=> telefono
+	=> phone
 	=> email
 - Cliente Contado - Ticket => ID_Ticket
 => Inventario
@@ -13,4 +13,4 @@
 => Facturas
 - ID_Ticket || ID_Factura
 - [] Lineas_factura
-=> Pasarela de Pago - Simulada
+=> Pasarela de Pago - (Simulada)

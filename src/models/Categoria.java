@@ -1,29 +1,28 @@
 package src.models;
-
-import java.sql.Connection;
+ 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Date;
 
 import src.models.comun.DbObject;
 
-public class Categoria extends DbObject {
+public class Categoria extends DbObject { 
 
 	private Integer id;
 	private Date created;
 	private String nombre;
 	
+	@Override
 	public Integer getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	private void setId(Integer id) {
 		this.id = id;
 	}
 	public Date getCreated() {
 		return created;
 	}
-	public void setCreated(Date created) {
+	private void setCreated(Date created) {
 		this.created = created;
 	}
 	public String getNombre() {
@@ -31,26 +30,40 @@ public class Categoria extends DbObject {
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
-	}
+	} 
 	
+	@Override
+	public String toString() {
+		return this.getValues();
+	}
 	
 	@Override
 	public String getTable() {
-		
 		return "categorias";
 	}
 	@Override
-	public String getCampos() {
-		String campos = "";
-		if (this.nombre != null || !this.nombre.trim().isEmpty()) {
-			campos = campos + "nombre";
-		}
-		return "nombre";
+	public String getCampos() {  
+		return getCorrectCampos(null, "nombre", this.nombre);
 	}
 	@Override
 	public String getValues() {
-		return "'"+this.nombre+"'";				
+		return getCorrectValues(null, this.nombre);		
+	} 
+	
+	@Override
+	public DbObject getDbObject(ResultSet res) throws SQLException {
+		Categoria item = new Categoria();
+		item.setId( res.getInt("id") ); 
+		 
+		int created = res.getInt("created");
+		Date date = new Date(created);		
+		item.setCreated( date );
+		item.setNombre( res.getString("nombre") ); 
+		
+		return item;
 	}
+	
+	
 	
 	
 	
